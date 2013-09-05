@@ -11,6 +11,9 @@ module Elasticsnap
     def initialize(url: nil, volume: nil)
       raise ArgumentError, "url required" if url.nil?
       raise ArgumentError, "volume required" if volume.nil?
+
+      @url = url
+      @volume = volume
     end
 
     def call
