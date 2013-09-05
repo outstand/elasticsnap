@@ -3,7 +3,8 @@ require 'spec_helper'
 describe Elasticsnap::Snapshot do
   let(:url) { 'localhost:9200' }
   let(:volume) { '/dev/sda' }
-  let(:snapshot) { described_class.new(url: url, volume: volume) }
+  let(:quorum_nodes) { 2 }
+  let(:snapshot) { described_class.new(url: url, volume: volume, quorum_nodes: quorum_nodes) }
 
   before do
     allow(snapshot).to receive(:verify_es_cluster_status!)
@@ -22,6 +23,10 @@ describe Elasticsnap::Snapshot do
 
   it 'requires volume' do
     expect { described_class.new(url: 'foo') }.to raise_error ArgumentError
+  end
+
+  it 'requires quorum_nodes' do
+    expect { described_class.new(url: 'foo', volume: 'foo') }.to raise_error ArgumentError
   end
 
   it 'checks the ES cluster status' do

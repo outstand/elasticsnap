@@ -7,13 +7,16 @@ module Elasticsnap
   class Snapshot
     attr_accessor :url
     attr_accessor :volume
+    attr_accessor :quorum_nodes
 
-    def initialize(url: nil, volume: nil)
+    def initialize(url: nil, volume: nil, quorum_nodes: nil)
       raise ArgumentError, "url required" if url.nil?
       raise ArgumentError, "volume required" if volume.nil?
+      raise ArgumentError, "quorum_nodes required" if quorum_nodes.nil?
 
       @url = url
       @volume = volume
+      @quorum_nodes = quorum_nodes
     end
 
     def call
@@ -26,7 +29,7 @@ module Elasticsnap
     end
 
     def verify_es_cluster_status!
-      VerifyEsClusterStatus.new(url: url).verify!
+      VerifyEsClusterStatus.new(url: url, quorum_nodes: quorum_nodes).verify!
     end
 
     def freeze_es(&block)
