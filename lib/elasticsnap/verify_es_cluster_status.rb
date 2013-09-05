@@ -24,6 +24,7 @@ module Elasticsnap
     end
 
     def wait_for_green_quorum!
+      Flex::Configuration.http_client.base_uri = url
       health = Flex.cluster_health(
         params: {
           wait_for_status: 'yellow',
