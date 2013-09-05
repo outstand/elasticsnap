@@ -16,6 +16,7 @@ module Elasticsnap
 
       @url = url
       @quorum_nodes = quorum_nodes
+      @wait_timeout = wait_timeout
     end
 
     def verify!
@@ -26,7 +27,7 @@ module Elasticsnap
       health = Flex.cluster_health(
         params: {
           wait_for_status: 'yellow',
-          wait_for_nodes: ">=#{quorum_nodes}",
+          wait_for_nodes: "gt(#{quorum_nodes})",
           timeout: "#{wait_timeout}s"
         }
       )
