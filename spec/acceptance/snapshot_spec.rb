@@ -3,10 +3,7 @@ require 'spec_helper'
 describe 'Snapshots' do
   before do
     WebMock.disable_net_connect!
-  end
-
-  after do
-    WebMock.allow_net_connect!
+    #WebMock.allow_net_connect!
   end
 
   let(:timeout) { 2 }
@@ -34,7 +31,44 @@ describe 'Snapshots' do
       })
     )
 
+    flush = stub_request(:post, 'localhost:9200/_all/_flush').to_return(
+      body: MultiJson.dump({
+        'ok' => true
+      })
+    )
+
+    disable_flush = stub_request(:put, 'localhost:9200/_all/_settings').with(
+      body: MultiJson.dump({
+        index: {
+          translog: {
+            disable_flush: true
+          }
+        }
+      })
+    ).to_return(
+      body: MultiJson.dump({
+        'ok' => true
+      })
+    )
+
+    enable_flush = stub_request(:put, 'localhost:9200/_all/_settings').with(
+      body: MultiJson.dump({
+        index: {
+          translog: {
+            disable_flush: false
+          }
+        }
+      })
+    ).to_return(
+      body: MultiJson.dump({
+        'ok' => true
+      })
+    )
+
     start(:snapshot, args)
     expect(health_check).to have_been_requested
+    expect(flush).to have_been_requested
+    expect(disable_flush).to have_been_requested
+    expect(enable_flush).to have_been_requested
   end
 end
