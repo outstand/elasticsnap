@@ -4,9 +4,12 @@
 # loaded once.
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
+
 #require 'byebug'
 require 'elasticsnap'
 require 'aruba/api'
+require 'aruba/in_process'
+require 'webmock/rspec'
 
 Dir['./spec/support/*.rb'].map {|f| require f}
 
