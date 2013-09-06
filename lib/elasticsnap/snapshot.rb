@@ -8,8 +8,9 @@ module Elasticsnap
     attr_accessor :url
     attr_accessor :volume
     attr_accessor :quorum_nodes
+    attr_accessor :wait_timeout
 
-    def initialize(url: nil, volume: nil, quorum_nodes: nil)
+    def initialize(url: nil, volume: nil, quorum_nodes: nil, wait_timeout: 30)
       raise ArgumentError, "url required" if url.nil?
       raise ArgumentError, "volume required" if volume.nil?
       raise ArgumentError, "quorum_nodes required" if quorum_nodes.nil?
@@ -17,6 +18,7 @@ module Elasticsnap
       @url = url
       @volume = volume
       @quorum_nodes = quorum_nodes
+      @wait_timeout = wait_timeout
     end
 
     def call
@@ -29,7 +31,7 @@ module Elasticsnap
     end
 
     def verify_es_cluster_status!
-      VerifyEsClusterStatus.new(url: url, quorum_nodes: quorum_nodes).verify!
+      VerifyEsClusterStatus.new(url: url, quorum_nodes: quorum_nodes, wait_timeout: wait_timeout).verify!
     end
 
     def freeze_es(&block)
