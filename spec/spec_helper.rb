@@ -6,6 +6,9 @@
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 #require 'byebug'
 require 'elasticsnap'
+require 'aruba/api'
+
+Dir['./spec/support/*.rb'].map {|f| require f}
 
 RSpec.configure do |config|
   config.treat_symbols_as_metadata_keys_with_true_values = true
@@ -17,4 +20,8 @@ RSpec.configure do |config|
   # the seed, which is printed after each run.
   #     --seed 1234
   config.order = 'random'
+
+  config.include Aruba::Api, example_group: {
+    file_path: %r{spec/acceptance}
+  }
 end
