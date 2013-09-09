@@ -1,10 +1,11 @@
 require 'spec_helper'
 
 describe Elasticsnap::Snapshot do
+  let(:security_group) { 'elasticsearch' }
   let(:url) { 'localhost:9200' }
-  let(:volume) { '/dev/sda' }
+  let(:mount) { '/usr/local/var/data/elasticsearch/disk1' }
   let(:quorum_nodes) { 2 }
-  let(:snapshot) { described_class.new(url: url, volume: volume, quorum_nodes: quorum_nodes) }
+  let(:snapshot) { described_class.new(security_group: security_group, url: url, mount: mount, quorum_nodes: quorum_nodes) }
 
   before do
     allow(snapshot).to receive(:verify_es_cluster_status!)
@@ -17,16 +18,20 @@ describe Elasticsnap::Snapshot do
     allow(snapshot).to receive(:ebs_snapshot!)
   end
 
-  it 'requires url' do
-    expect { described_class.new(volume: 'foo') }.to raise_error ArgumentError
+  it 'requires security group' do
+    expect { described_class.new }.to raise_error ArgumentError
   end
 
-  it 'requires volume' do
-    expect { described_class.new(url: 'foo') }.to raise_error ArgumentError
+  it 'requires url' do
+    expect { described_class.new(security_group: 'foo') }.to raise_error ArgumentError
+  end
+
+  it 'requires mount' do
+    expect { described_class.new(security_group: 'foo', url: 'foo') }.to raise_error ArgumentError
   end
 
   it 'requires quorum_nodes' do
-    expect { described_class.new(url: 'foo', volume: 'foo') }.to raise_error ArgumentError
+    expect { described_class.new(security_group: 'foo', url: 'foo', mount: 'foo') }.to raise_error ArgumentError
   end
 
   it 'checks the ES cluster status' do

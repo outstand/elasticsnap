@@ -5,20 +5,25 @@ require 'elasticsnap/ebs_snapshot'
 
 module Elasticsnap
   class Snapshot
+    attr_accessor :security_group
     attr_accessor :url
-    attr_accessor :volume
+    attr_accessor :mount
     attr_accessor :quorum_nodes
     attr_accessor :wait_timeout
+    attr_accessor :cluster_name
 
-    def initialize(url: nil, volume: nil, quorum_nodes: nil, wait_timeout: 30)
+    def initialize(security_group: nil, url: nil, mount: nil, quorum_nodes: nil, wait_timeout: 30, cluster_name: nil)
+      raise ArgumentError, "security_group required" if security_group.nil?
       raise ArgumentError, "url required" if url.nil?
-      raise ArgumentError, "volume required" if volume.nil?
+      raise ArgumentError, "mount required" if mount.nil?
       raise ArgumentError, "quorum_nodes required" if quorum_nodes.nil?
 
+      @security_group = security_group
       @url = url
-      @volume = volume
+      @mount = mount
       @quorum_nodes = quorum_nodes
       @wait_timeout = wait_timeout
+      @cluster_name = cluster_name
     end
 
     def call
@@ -39,11 +44,11 @@ module Elasticsnap
     end
 
     def freeze_fs(&block)
-      FreezeFs.new(volume: volume).freeze(&block)
+      FreezeFs.new(mount: mount, security_group: security_group).freeze(&block)
     end
 
     def ebs_snapshot!
-      EbsSnapshot.new(volume: volume).call
+      EbsSnapshot.new(security_group: security_group, cluster_name: cluster_name).snapshot
     end
   end
 end
