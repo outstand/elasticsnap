@@ -1,6 +1,6 @@
 # Elasticsnap
 
-TODO: Write a gem description
+Consistent snapshots for elasticsearch with a focus on EBS snapshots
 
 ## Installation
 
