@@ -1,0 +1,18 @@
+language: ruby
+before_install:
+  - gem update --system
+  - "echo 'gem: --no-ri --no-rdoc' > ~/.gemrc"
+bundler_args: --without development --path=~/.bundle
+script: bundle exec rspec spec
+rvm:
+  - 2.0.0-p247
+notifications:
+  email: false
+  hipchat:
+    on_success: always
+    on_failure: always
+    rooms:
+      secure: "jWfltaRoiOG0CxF6IRx2fo+rPziThLpDSIpI+qNGc7R1tapfBfdLT6/WwDyzaVkKEIPkUafmTy1yR3jYAJaboSLRuReehQyRvkjm+NrYMVU9G/mXWmoXYncnFWYfPmKXWFmRKqx6jIXlZp8WSO1Morr0WgX98TBowMTpZYJWXms="
+branches:
+  only:
+    - master
