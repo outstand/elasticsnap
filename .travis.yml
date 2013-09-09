@@ -2,7 +2,6 @@ language: ruby
 before_install:
   - gem update --system
   - "echo 'gem: --no-ri --no-rdoc' > ~/.gemrc"
-bundler_args: --without development --path=~/.bundle
 script: bundle exec rspec spec
 rvm:
   - 2.0.0-p247
