@@ -28,10 +28,10 @@ describe Elasticsnap::SecurityGroup do
 
   describe '#hosts' do
     it 'fetches all servers with the group id' do
-      allow(group).to receive(:id).and_return('group-deadbeef')
+      allow(group).to receive(:id).and_return('sg-deadbeef')
       servers = double(:servers)
       group.stub_chain(:connection, :servers).and_return(servers)
-      expect(servers).to receive(:all).with('group-id' => 'group-deadbeef')
+      expect(servers).to receive(:all).with('group-id' => 'sg-deadbeef')
       group.hosts
     end
   end
