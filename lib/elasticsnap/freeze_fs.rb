@@ -41,7 +41,7 @@ module Elasticsnap
       stream(command)
     end
 
-    def stream(command)
+    def stream(*command)
       command = [command].flatten.join(' ')
       capistrano_config.stream(command, hosts: SecurityGroup.new(name: security_group).ssh_hosts)
     end
