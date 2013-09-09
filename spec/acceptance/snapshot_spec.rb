@@ -11,6 +11,7 @@ describe 'Snapshots' do
   let(:args) { "-u localhost:9200 -v /dev/sda -q #{quorum} -t #{timeout}" }
 
   it 'User creates snapshot' do
+    pending 'Add stubs for ssh connections and fog'
     health_check = stub_request(:get, 'localhost:9200/_cluster/health/').with(
       query: hash_including({
         wait_for_nodes: "gt(#{quorum})",
