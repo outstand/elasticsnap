@@ -37,8 +37,8 @@ module Elasticsnap
     end
 
     private
-    def run_command(command)
-      stream(command)
+    def run_command(*command)
+      stream(*command)
     end
 
     def stream(*command)
