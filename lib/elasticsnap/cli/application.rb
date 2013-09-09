@@ -10,7 +10,7 @@ module Elasticsnap
       method_option :quorum_nodes, type: :numeric, aliases: '-q', required: true, desc: 'Number of nodes required for quorum'
       method_option :url, type: :string, aliases: '-u', default: 'localhost:9200', desc: 'Elasticsearch URL'
       method_option :wait_timeout, type: :numeric, aliases: '-t', default: 30, desc: 'Number of seconds to wait for elasticsearch to become healthy'
-      method_option :cluster_name, type: :string, desc: 'Elasticsearch cluster name used to filter EBS volumes'
+      method_option :cluster_name, type: :string, aliases: '-n' ,desc: 'Elasticsearch cluster name used to filter EBS volumes'
       def snapshot
         Snapshot.new(
           security_group: options[:security_group],
