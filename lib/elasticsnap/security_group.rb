@@ -14,8 +14,14 @@ module Elasticsnap
       @hosts ||= connection.servers.all('group-id' => id)
     end
 
-    def ssh_hosts
-      hosts.map(&:dns_name)
+    def ssh_hosts(ssh_user: nil)
+      hosts.map do |host|
+        if ssh_user
+          "#{ssh_user}@#{host.dns_name}"
+        else
+          host.dns_name
+        end
+      end
     end
 
     def volumes(cluster_name: nil)

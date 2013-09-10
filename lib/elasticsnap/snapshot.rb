@@ -11,8 +11,9 @@ module Elasticsnap
     attr_accessor :quorum_nodes
     attr_accessor :wait_timeout
     attr_accessor :cluster_name
+    attr_accessor :ssh_user
 
-    def initialize(security_group: nil, url: nil, mount: nil, quorum_nodes: nil, wait_timeout: 30, cluster_name: nil)
+    def initialize(security_group: nil, url: nil, mount: nil, quorum_nodes: nil, wait_timeout: 30, cluster_name: nil, ssh_user: nil)
       raise ArgumentError, "security_group required" if security_group.nil?
       raise ArgumentError, "url required" if url.nil?
       raise ArgumentError, "mount required" if mount.nil?
@@ -24,6 +25,7 @@ module Elasticsnap
       @quorum_nodes = quorum_nodes
       @wait_timeout = wait_timeout
       @cluster_name = cluster_name
+      @ssh_user = ssh_user
     end
 
     def call
@@ -44,7 +46,7 @@ module Elasticsnap
     end
 
     def freeze_fs(&block)
-      FreezeFs.new(mount: mount, security_group: security_group).freeze(&block)
+      FreezeFs.new(mount: mount, security_group: security_group, ssh_user: ssh_user).freeze(&block)
     end
 
     def ebs_snapshot!

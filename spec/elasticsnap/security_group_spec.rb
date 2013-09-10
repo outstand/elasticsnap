@@ -64,14 +64,18 @@ describe Elasticsnap::SecurityGroup do
   end
 
   describe '#ssh_hosts' do
-    it 'fetches the dns name for all hosts in the security group' do
-      hosts = []
-      expect(group).to receive(:hosts).and_return(hosts)
-      hosts.each do |host|
-        expect(host).to receive(:dns_name)
-      end
+    before do
+      allow(group).to receive(:hosts).and_return(hosts)
+    end
 
-      group.ssh_hosts
+    it 'fetches the dns name for all hosts in the security group' do
+      expect(group.ssh_hosts).to eq ['host1.ec2', 'host2.ec2']
+    end
+
+    context 'with an ssh user' do
+      it 'adds the ssh user to each host' do
+        expect(group.ssh_hosts(ssh_user: 'foo')).to eq ['foo@host1.ec2', 'foo@host2.ec2']
+      end
     end
   end
 end

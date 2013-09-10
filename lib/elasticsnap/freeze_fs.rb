@@ -4,13 +4,15 @@ module Elasticsnap
   class FreezeFs
     attr_accessor :mount
     attr_accessor :security_group
+    attr_accessor :ssh_user
 
-    def initialize(mount: nil, security_group: nil)
+    def initialize(mount: nil, security_group: nil, ssh_user: nil)
       raise ArgumentError, 'mount required' if mount.nil?
       raise ArgumentError, 'security_group required' if security_group.nil?
 
       @mount = mount
       @security_group = security_group
+      @ssh_user = ssh_user
     end
 
     def freeze(&block)
@@ -43,7 +45,7 @@ module Elasticsnap
 
     def stream(*command)
       command = [command].flatten.join(' ')
-      capistrano_config.stream(command, hosts: SecurityGroup.new(name: security_group).ssh_hosts)
+      capistrano_config.stream(command, hosts: SecurityGroup.new(name: security_group).ssh_hosts(ssh_user))
     end
 
     def capistrano_config
