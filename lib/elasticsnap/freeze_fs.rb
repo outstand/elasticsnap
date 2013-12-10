@@ -27,15 +27,15 @@ module Elasticsnap
     end
 
     def sync
-      run_command('sudo sync')
+      run_command('sudo /bin/sync')
     end
 
     def freeze_fs
-      run_command 'sudo fsfreeze', '-f', mount
+      run_command 'sudo /sbin/fsfreeze', '-f', mount
     end
 
     def unfreeze_fs
-      run_command 'sudo fsfreeze', '-u', mount
+      run_command 'sudo /sbin/fsfreeze', '-u', mount
     end
 
     private
