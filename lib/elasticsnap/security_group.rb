@@ -11,7 +11,7 @@ module Elasticsnap
     end
 
     def hosts
-      @hosts ||= connection.servers.all('group-id' => id)
+      @hosts ||= connection.servers.all('group-id' => id, 'instance-state-name' => 'running')
     end
 
     def ssh_hosts(ssh_user: nil)
