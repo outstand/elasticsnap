@@ -45,7 +45,9 @@ module Elasticsnap
 
     def stream(*command)
       command = [command].flatten.join(' ')
-      capistrano_config.stream(command, hosts: SecurityGroup.new(name: security_group).ssh_hosts(ssh_user: ssh_user))
+      hosts = SecurityGroup.new(name: security_group).ssh_hosts(ssh_user: ssh_user)
+      puts "Running #{command} across #{hosts.inspect}"
+      capistrano_config.stream(command, hosts: hosts)
     end
 
     def capistrano_config
